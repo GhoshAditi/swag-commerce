@@ -84,7 +84,7 @@ export default function CartPage() {
 
   const calculateCart = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/carts/calculate/', {
+      const response = await fetch('http://localhost:8000/api/cart/calculate/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

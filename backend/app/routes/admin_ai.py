@@ -8,7 +8,11 @@ from app.database import get_db
 from app.models import Product, Order, Coupon
 from app.ai.gemini import ask_gemini
 
-router = APIRouter(prefix="/admin/ai", tags=["Admin AI"])
+router = APIRouter(
+    prefix="/admin/ai", 
+    tags=["Admin AI"],
+    include_in_schema=True
+)
 
 
 async def get_admin_context(db: AsyncSession):
@@ -54,7 +58,12 @@ class ChatRequest(BaseModel):
     question: str
 
 
-@router.post("/chat")
+@router.post(
+    "/chat",
+    summary="Admin AI Chat",
+    description="Ask AI questions about your business metrics, inventory, sales, orders, and coupons",
+    response_description="AI-generated answer based on real-time database context"
+)
 async def admin_ai_chat(
     request: ChatRequest,
     db: AsyncSession = Depends(get_db)
