@@ -44,19 +44,19 @@ export default function AdminAIChat() {
     setLoading(true)
 
     try {
-      const response = await fetch('http://localhost:8000/api/ai/chat', {
+      const response = await fetch('http://localhost:8000/api/admin/ai/chat', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ message: input }),
+        body: JSON.stringify({ question: input }),
       })
 
       if (response.ok) {
         const data = await response.json()
         const aiMessage: Message = {
           role: 'assistant',
-          content: data.response,
+          content: data.answer,
           timestamp: new Date()
         }
         setMessages(prev => [...prev, aiMessage])

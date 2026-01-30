@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 
 from app.config import get_settings
 from app.database import init_db, close_db
-from app.routes import products, coupons, orders, analytics, ai, auth, cart
+from app.routes import products, coupons, orders, analytics, ai, auth, cart, admin_ai
 
 settings = get_settings()
 
@@ -48,6 +48,7 @@ app.include_router(cart.router, prefix=settings.API_V1_PREFIX)
 app.include_router(orders.router, prefix=settings.API_V1_PREFIX)
 app.include_router(analytics.router, prefix=settings.API_V1_PREFIX)
 app.include_router(ai.router, prefix=settings.API_V1_PREFIX)
+app.include_router(admin_ai.router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { ShoppingCart, Plus, Minus, Tag, Sparkles, CheckCircle, AlertCircle } from 'lucide-react'
-import { Product, CartItem, CouponValidationResult } from '@/types'
+import { Product, CartItem, CouponValidationResult } from '../types'
 
 // Mock data - this will be replaced by API calls
 const mockProducts: Product[] = [
