@@ -11,7 +11,11 @@ from app.config import get_settings
 
 settings = get_settings()
 
-router = APIRouter(prefix="/admin/ai", tags=["Admin AI"])
+router = APIRouter(
+    prefix="/admin/ai", 
+    tags=["Admin AI"],
+    include_in_schema=True
+)
 
 
 async def get_database_context(db: AsyncSession) -> str:
