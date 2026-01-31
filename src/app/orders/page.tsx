@@ -46,13 +46,14 @@ export default function OrdersPage() {
 
   const fetchOrderHistory = async () => {
     try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
       const token = localStorage.getItem('token')
       if (!token) {
         router.push('/signin')
         return
       }
 
-      const response = await fetch('http://localhost:8000/api/orders/history', {
+      const response = await fetch(`${API_URL}/api/orders/history`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },

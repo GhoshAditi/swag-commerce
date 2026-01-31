@@ -26,8 +26,9 @@ export default function EnhancedAdminDashboard() {
 
   const fetchAnalytics = async () => {
     try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
       const token = localStorage.getItem('token')
-      const response = await fetch('http://localhost:8000/api/analytics/dashboard', {
+      const response = await fetch(`${API_URL}/api/analytics/dashboard`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       })
 

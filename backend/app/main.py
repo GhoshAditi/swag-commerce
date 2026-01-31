@@ -85,6 +85,7 @@ async def root():
         "version": settings.VERSION,
         "docs": "/docs",
         "endpoints": {
+            
             "products": f"{settings.API_V1_PREFIX}/products",
             "coupons": f"{settings.API_V1_PREFIX}/coupons/validate",
             "orders": f"{settings.API_V1_PREFIX}/orders",

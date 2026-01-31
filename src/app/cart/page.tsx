@@ -78,7 +78,8 @@ export default function CartPage() {
 
   const fetchCoupons = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/coupons/')
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const response = await fetch(`${API_URL}/api/coupons/`)
       if (response.ok) {
         const data = await response.json()
         setAvailableCoupons(data)
@@ -90,7 +91,8 @@ export default function CartPage() {
 
   const calculateCart = async () => {
     try {
-      const response = await fetch('http://localhost:8000/api/cart/calculate/', {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const response = await fetch(`${API_URL}/api/cart/calculate/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -147,8 +149,9 @@ export default function CartPage() {
 
     setLoading(true)
     try {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
       const token = localStorage.getItem('token')
-      const response = await fetch('http://localhost:8000/api/orders/', {
+      const response = await fetch(`${API_URL}/api/orders/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

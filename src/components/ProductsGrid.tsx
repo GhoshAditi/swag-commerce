@@ -41,7 +41,8 @@ export default function ProductsGrid() {
         headers['Authorization'] = `Bearer ${token}`
       }
 
-      const response = await fetch('http://localhost:8000/api/products/', {
+      const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
+      const response = await fetch(`${API_URL}/api/products/`, {
         headers
       })
       
