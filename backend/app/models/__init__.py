@@ -106,6 +106,7 @@ class User(Base):
     email = Column(String(255), unique=True, nullable=False, index=True)
     password = Column(String(255), nullable=False)  # Hashed password
     name = Column(String(255), nullable=True)
+    server = Column(String(255), nullable=True)  # Server/company name
     tier = Column(Integer, default=1, nullable=False)  # User tier: 1, 2, or 3
    
     order_history = Column(JSON, default=list, nullable=False)  # List of order IDs

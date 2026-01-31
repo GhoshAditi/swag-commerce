@@ -8,41 +8,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        beige: {
-          50: '#fdfbf7',
-          100: '#f8f4ed',
-          200: '#f0e6d6',
-          300: '#e8d7bf',
-          400: '#dcc49b',
-          500: '#d4b896',
-          600: '#c19a6b',
-          700: '#a87d4f',
-          800: '#8b6539',
-          900: '#6b4e29',
-        },
+        // Professional neutral palette (Odoo/Zendesk inspired)
         primary: {
-          50: '#f8f6f4',
-          100: '#e8e1d9',
-          200: '#d4c4b3',
-          300: '#bfa68d',
-          400: '#a88967',
-          500: '#8b6f47',
-          600: '#6e5838',
-          700: '#524129',
-          800: '#362b1b',
-          900: '#1a150d',
+          50: '#f8f9fa',
+          100: '#e9ecef',
+          200: '#dee2e6',
+          300: '#ced4da',
+          400: '#adb5bd',
+          500: '#6c757d',
+          600: '#495057',
+          700: '#343a40',
+          800: '#212529',
+          900: '#121416',
         },
         accent: {
-          50: '#fff9f5',
-          100: '#ffeee0',
-          200: '#ffd9b8',
-          300: '#ffc490',
-          400: '#ffad68',
-          500: '#ff9640',
-          600: '#d87433',
-          700: '#b15526',
-          800: '#8a3a1a',
-          900: '#63210e',
+          50: '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
+          800: '#9a3412',
+          900: '#7c2d12',
         },
         success: {
           50: '#f0fdf4',
@@ -70,46 +59,44 @@ module.exports = {
         }
       },
       animation: {
-        'fade-in': 'fadeIn 0.6s ease-out',
-        'fade-in-up': 'fadeInUp 0.6s ease-out',
-        'fade-in-down': 'fadeInDown 0.6s ease-out',
-        'slide-in-left': 'slideInLeft 0.6s ease-out',
-        'slide-in-right': 'slideInRight 0.6s ease-out',
-        'scale-up': 'scaleUp 0.4s ease-out',
-        'bounce-slow': 'bounce 3s infinite',
-        'thinking': 'pulse 1.5s ease-in-out infinite',
+        'fade-in': 'fadeIn 0.3s ease-in-out',
+        'slide-up': 'slideUp 0.3s ease-out',
+        'slide-down': 'slideDown 0.3s ease-out',
+        'scale-in': 'scaleIn 0.2s ease-out',
         'shimmer': 'shimmer 2s infinite',
+        'pulse-soft': 'pulseSoft 2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
       },
       keyframes: {
         fadeIn: {
           '0%': { opacity: '0' },
           '100%': { opacity: '1' },
         },
-        fadeInUp: {
-          '0%': { opacity: '0', transform: 'translateY(20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        slideUp: {
+          '0%': { transform: 'translateY(10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
-        fadeInDown: {
-          '0%': { opacity: '0', transform: 'translateY(-20px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        slideDown: {
+          '0%': { transform: 'translateY(-10px)', opacity: '0' },
+          '100%': { transform: 'translateY(0)', opacity: '1' },
         },
-        slideInLeft: {
-          '0%': { opacity: '0', transform: 'translateX(-50px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        slideInRight: {
-          '0%': { opacity: '0', transform: 'translateX(50px)' },
-          '100%': { opacity: '1', transform: 'translateX(0)' },
-        },
-        scaleUp: {
-          '0%': { opacity: '0', transform: 'scale(0.9)' },
-          '100%': { opacity: '1', transform: 'scale(1)' },
+        scaleIn: {
+          '0%': { transform: 'scale(0.9)', opacity: '0' },
+          '100%': { transform: 'scale(1)', opacity: '1' },
         },
         shimmer: {
           '0%': { backgroundPosition: '-1000px 0' },
           '100%': { backgroundPosition: '1000px 0' },
-        }
-      }
+        },
+        pulseSoft: {
+          '0%, 100%': { opacity: '1' },
+          '50%': { opacity: '0.8' },
+        },
+      },
+      boxShadow: {
+        'soft': '0 2px 8px rgba(0, 0, 0, 0.04)',
+        'soft-lg': '0 4px 16px rgba(0, 0, 0, 0.06)',
+        'soft-xl': '0 8px 24px rgba(0, 0, 0, 0.08)',
+      },
     },
   },
   plugins: [],

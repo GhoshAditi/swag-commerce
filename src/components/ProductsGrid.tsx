@@ -25,14 +25,22 @@ export default function ProductsGrid() {
   const [products, setProducts] = useState<Product[]>([])
   const [quantities, setQuantities] = useState<{[key: string]: number}>({})
   const [loading, setLoading] = useState(true)
+  const [userTier, setUserTier] = useState<number>(1)
 
   useEffect(() => {
+    // Get user tier from localStorage
+    const user = localStorage.getItem('user')
+    if (user) {
+      const userData = JSON.parse(user)
+      setUserTier(userData.tier || 1)
+    }
     fetchProducts()
   }, [])
 
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem('token')
+      const user = localStorage.getItem('user')
       const headers: HeadersInit = {
         'Content-Type': 'application/json'
       }
@@ -48,6 +56,15 @@ export default function ProductsGrid() {
       
       if (response.ok) {
         const data = await response.json()
+        
+        // Log user tier for debugging
+        if (user) {
+          const userData = JSON.parse(user)
+          console.log(`Fetching products for user tier: ${userData.tier || 1}`)
+        } else {
+          console.log('Fetching products for unauthenticated user (Tier 1 only)')
+        }
+        
         setProducts(data)
         const initialQuantities: {[key: string]: number} = {}
         data.forEach((product: Product) => {
@@ -128,8 +145,24 @@ export default function ProductsGrid() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       <div className="mb-8">
-        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Discover Our Products</h2>
-        <p className="text-gray-600">Premium quality items at great prices</p>
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-2">Discover Our Products</h2>
+            <p className="text-gray-600">Premium quality items at great prices</p>
+          </div>
+          {/* User Tier Badge */}
+          <div className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-50 to-purple-50 border-2 border-blue-200 rounded-lg">
+            <span className="text-2xl">
+              {userTier === 1 ? '🥉' : userTier === 2 ? '🥈' : '🥇'}
+            </span>
+            <div>
+              <p className="text-xs text-gray-600">Your Tier</p>
+              <p className="font-bold text-blue-600">
+                Tier {userTier} {userTier === 1 ? 'Basic' : userTier === 2 ? 'Standard' : 'Premium'}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">

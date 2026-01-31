@@ -72,7 +72,11 @@ export default function CartPage() {
 
   useEffect(() => {
     if (cartItems.length > 0) {
+      // Calculate immediately on load or when items/coupons change
       calculateCart()
+    } else {
+      // Reset calculation when cart is empty
+      setCartCalculation(null)
     }
   }, [cartItems, selectedCoupons])
 
@@ -90,9 +94,26 @@ export default function CartPage() {
   }
 
   const calculateCart = async () => {
+    // First, set local calculation immediately for instant feedback
+    const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    
+    // Set initial values before API call
+    setCartCalculation({
+      subtotal,
+      applied_coupons: [],
+      total_discount: 0,
+      final_total: subtotal,
+      can_add_more_coupons: true
+    })
+
+    // If no coupons selected, no need to call API
+    if (selectedCoupons.length === 0) {
+      return
+    }
+
     try {
       const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
-      const response = await fetch(`${API_URL}/api/cart/calculate/`, {
+      const response = await fetch(`${API_URL}/api/cart/calculate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

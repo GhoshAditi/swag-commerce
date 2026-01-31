@@ -124,6 +124,7 @@ class UserSignUp(BaseModel):
     )
     password: str = Field(..., min_length=6)
     name: Optional[str] = None
+    server: Optional[str] = None
     tier: int = Field(default=1, ge=1, le=3)
 
 

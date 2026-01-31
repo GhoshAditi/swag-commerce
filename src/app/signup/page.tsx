@@ -55,57 +55,41 @@ export default function SignUp() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-pink-50 flex items-center justify-center px-4 py-12 relative overflow-hidden">
-      {/* Animated background elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 w-80 h-80 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob"></div>
-        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-blue-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-2000"></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-80 h-80 bg-pink-300 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-blob animation-delay-4000"></div>
-      </div>
-
-      <div className="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-center relative z-10">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 py-12">
+      <div className="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-stretch">
         {/* Left side - Branding */}
-        <div className="hidden md:block">
-          <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 rounded-3xl p-12 text-white shadow-2xl transform hover:scale-105 transition-transform duration-300">
-            <div className="flex items-center space-x-3 mb-6">
-              <ShoppingBag className="w-16 h-16 animate-bounce" />
-              <Sparkles className="w-8 h-8 text-yellow-300 animate-pulse" />
-            </div>
-            <h1 className="text-4xl font-bold mb-4">Join SwagCommerce</h1>
+        <div className="hidden md:flex md:flex-col">
+          <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-2xl h-full flex flex-col justify-center">
+            <ShoppingBag className="w-16 h-16 mb-6" />
+            <h1 className="text-4xl font-bold mb-4">SwagCommerce</h1>
             <p className="text-blue-100 text-lg mb-8">
-              Start your journey with the most advanced merchandise platform
+              Your premium bulk merchandise platform with intelligent business insights
             </p>
             <div className="space-y-4">
-              <div className="flex items-center space-x-3 transform hover:translate-x-2 transition-transform">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-2xl">🎯</span>
                 </div>
-                <span>Smart tiered pricing system</span>
+                <span>Tiered pricing for bulk orders</span>
               </div>
-              <div className="flex items-center space-x-3 transform hover:translate-x-2 transition-transform">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-2xl">📊</span>
                 </div>
-                <span>Real-time analytics dashboard</span>
+                <span>Advanced analytics dashboard</span>
               </div>
-              <div className="flex items-center space-x-3 transform hover:translate-x-2 transition-transform">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
                   <span className="text-2xl">🤖</span>
                 </div>
-                <span>AI-powered insights</span>
-              </div>
-              <div className="flex items-center space-x-3 transform hover:translate-x-2 transition-transform">
-                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center backdrop-blur">
-                  <span className="text-2xl">🚀</span>
-                </div>
-                <span>Lightning-fast checkout</span>
+                <span>AI-powered business assistant</span>
               </div>
             </div>
           </div>
         </div>
 
         {/* Right side - Sign Up Form */}
-        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12 backdrop-blur-lg bg-opacity-90">
+        <div className="bg-white rounded-3xl shadow-2xl p-8 md:p-12">
           <h2 className="text-3xl font-bold text-gray-900 mb-2">Create Account</h2>
           <p className="text-gray-600 mb-8">Join us today and start shopping</p>
 
@@ -202,6 +186,63 @@ export default function SignUp() {
               />
               <p className="text-xs text-gray-500 mt-1">Must be at least 6 characters</p>
             </div>
+
+            {/* Tier Selection - Only for Customers */}
+            {userType === 'user' && (
+              <div className="group">
+                <label className="block text-sm font-semibold text-gray-700 mb-3">
+                  Select Your Tier:
+                </label>
+                <p className="text-xs text-gray-600 mb-3">Higher tiers unlock better pricing on bulk orders</p>
+                <div className="grid grid-cols-3 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, tier: 1 })}
+                    className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all duration-300 ${
+                      formData.tier === 1
+                        ? 'border-green-500 bg-green-50 shadow-md scale-105'
+                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <span className={`text-2xl mb-1 ${formData.tier === 1 ? 'scale-110' : ''}`}>🥉</span>
+                    <span className={`font-semibold text-sm ${formData.tier === 1 ? 'text-green-600' : 'text-gray-600'}`}>
+                      Tier 1
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">Basic</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, tier: 2 })}
+                    className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all duration-300 ${
+                      formData.tier === 2
+                        ? 'border-blue-500 bg-blue-50 shadow-md scale-105'
+                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <span className={`text-2xl mb-1 ${formData.tier === 2 ? 'scale-110' : ''}`}>🥈</span>
+                    <span className={`font-semibold text-sm ${formData.tier === 2 ? 'text-blue-600' : 'text-gray-600'}`}>
+                      Tier 2
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">Standard</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, tier: 3 })}
+                    className={`flex flex-col items-center p-3 rounded-lg border-2 transition-all duration-300 ${
+                      formData.tier === 3
+                        ? 'border-yellow-500 bg-yellow-50 shadow-md scale-105'
+                        : 'border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <span className={`text-2xl mb-1 ${formData.tier === 3 ? 'scale-110' : ''}`}>🥇</span>
+                    <span className={`font-semibold text-sm ${formData.tier === 3 ? 'text-yellow-600' : 'text-gray-600'}`}>
+                      Tier 3
+                    </span>
+                    <span className="text-xs text-gray-500 mt-1">Premium</span>
+                  </button>
+                </div>
+              </div>
+            )}
 
             <button
               type="submit"

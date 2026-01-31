@@ -4,8 +4,8 @@
 
 :root {
   --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 253, 251, 247;
-  --background-end-rgb: 248, 244, 237;
+  --background-start-rgb: 248, 249, 250;
+  --background-end-rgb: 255, 255, 255;
 }
 
 body {
@@ -24,23 +24,67 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #f8f4ed;
+  background: #f1f3f5;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #c19a6b;
+  background: #adb5bd;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #a87d4f;
+  background: #6c757d;
 }
 
-/* Smooth transitions */
-* {
-  transition-property: color, background-color, border-color, transform, box-shadow;
-  transition-duration: 200ms;
-  transition-timing-function: ease-in-out;
+/* Input animations and styles */
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  @apply transition-all duration-200 ease-in-out;
+  @apply border-gray-300 focus:border-accent-500 focus:ring-2 focus:ring-accent-100;
+  @apply rounded-lg px-4 py-2.5;
+  @apply shadow-soft focus:shadow-soft-lg;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+textarea:focus,
+select:focus {
+  transform: translateY(-1px);
+  outline: none;
+}
+
+/* Button animations */
+button {
+  @apply transition-all duration-200 ease-in-out;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Card hover effects */
+.card-hover {
+  @apply transition-all duration-300 ease-in-out;
+}
+
+.card-hover:hover {
+  @apply shadow-soft-xl;
+  transform: translateY(-2px);
+}
+
+/* Smooth transitions for all interactive elements */
+a, button, [role="button"] {
+  @apply transition-all duration-200 ease-in-out;
 }
 
 /* Custom animations */
@@ -56,27 +100,58 @@ body {
 .shimmer {
   background: linear-gradient(
     90deg,
-    rgba(212, 184, 150, 0.1) 0%,
-    rgba(212, 184, 150, 0.3) 50%,
-    rgba(212, 184, 150, 0.1) 100%
+    rgba(248, 249, 250, 0.1) 0%,
+    rgba(248, 249, 250, 0.3) 50%,
+    rgba(248, 249, 250, 0.1) 100%
   );
   background-size: 1000px 100%;
   animation: shimmer 2s infinite;
 }
 
-/* Hover effects */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Loading skeleton */
+.skeleton {
+  @apply bg-gray-200 animate-pulse rounded;
 }
 
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+/* Fade in animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-slow {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* Box shadow utilities */
+.shadow-inner-soft {
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* Focus visible for accessibility */
+*:focus-visible {
+  @apply outline-2 outline-offset-2 outline-accent-500;
+}
+
+/* Disable default focus ring */
+*:focus {
+  outline: none;
 }
 
 /* Glass effect */
 .glass {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
 }

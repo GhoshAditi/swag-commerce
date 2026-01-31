@@ -38,6 +38,9 @@ export default function SignIn() {
       // Store token and user data with role
       localStorage.setItem('token', data.access_token);
       localStorage.setItem('user', JSON.stringify({ ...data.user, role: userType }));
+      
+      // Dispatch auth change event
+      window.dispatchEvent(new Event('authChange'));
 
       // Redirect based on role
       if (userType === 'admin') {
@@ -54,10 +57,10 @@ export default function SignIn() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 flex items-center justify-center px-4 py-12">
-      <div className="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-center">
+      <div className="max-w-5xl w-full grid md:grid-cols-2 gap-8 items-stretch">
         {/* Left side - Branding */}
-        <div className="hidden md:block">
-          <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-2xl">
+        <div className="hidden md:flex md:flex-col">
+          <div className="bg-gradient-to-br from-blue-600 to-purple-600 rounded-3xl p-12 text-white shadow-2xl h-full flex flex-col justify-center">
             <ShoppingBag className="w-16 h-16 mb-6" />
             <h1 className="text-4xl font-bold mb-4">SwagCommerce</h1>
             <p className="text-blue-100 text-lg mb-8">

@@ -27,6 +27,7 @@ async def sign_up(user_data: UserSignUp, db: AsyncSession = Depends(get_db)):
         email=user_data.email,
         password=hashed_password,
         name=user_data.name,
+        server=user_data.server,
         tier=user_data.tier,
         status="active"
     )
