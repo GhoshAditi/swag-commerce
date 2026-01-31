@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import { Receipt, Download, ArrowLeft, CheckCircle } from 'lucide-react'
-import Navbar from '@/components/Navbar'
+import Navbar from '../../../components/Navbar'
 
 interface OrderItem {
   product_id: string
@@ -59,9 +59,24 @@ export default function BillPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setBill(data)
+        // Transform response to match component expectations
+        const transformedBill = {
+          ...data,
+          order_id: data.order_id,
+          customer_name: data.customer_name,
+          customer_email: data.customer_email,
+          items: data.items,
+          subtotal: data.subtotal,
+          applied_coupons: data.applied_coupons || [],
+          total_discount: data.total_discount,
+          final_total: data.final_total,
+          created_at: data.created_at,
+          status: data.status
+        }
+        setBill(transformedBill)
       } else {
-        alert('Failed to load bill')
+        const errorData = await response.json().catch(() => ({}))
+        alert(`Failed to load bill: ${errorData.detail || 'Unknown error'}`)
         router.push('/orders')
       }
     } catch (error) {

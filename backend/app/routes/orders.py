@@ -220,69 +220,48 @@ async def get_order_history(
     current_user: User = Depends(get_current_user)
 ):
     """
-    Get order history for the current user
+    Get order history for the current user directly from database
     """
-    if not current_user.order_history or len(current_user.order_history) == 0:
+    # Fetch all orders for this user from orders table
+    query = select(Order).where(
+        Order.customer_email == current_user.email
+    ).order_by(Order.created_at.desc())
+    
+    result = await db.execute(query)
+    orders = result.scalars().all()
+    
+    if not orders:
         return []
     
-    # Order history now contains detailed order objects
     history = []
-    for order_data in current_user.order_history:
-        # Handle both old format (order_id string) and new format (dict)
-        if isinstance(order_data, str):
-            # Old format - fetch from orders table
-            query = select(Order).where(Order.id == order_data)
-            result = await db.execute(query)
-            order = result.scalar_one_or_none()
-            
-            if order:
-                items_query = select(OrderItem).where(OrderItem.order_id == order.id)
-                items_result = await db.execute(items_query)
-                items = items_result.scalars().all()
-                items_count = sum(item.quantity for item in items)
-                coupons_used = order.applied_coupon_code.split(",") if order.applied_coupon_code else []
-                
-                items_response = [
-                    OrderItemResponse(
-                        product_id=item.product_id,
-                        product_name=item.product_name,
-                        quantity=item.quantity,
-                        unit_price=item.unit_price,
-                        total_price=item.total_price
-                    )
-                    for item in items
-                ]
-                
-                history.append(OrderHistoryItem(
-                    order_id=order.id,
-                    items=items_response,
-                    total_amount=order.total,
-                    items_count=items_count,
-                    coupons_used=coupons_used,
-                    created_at=order.created_at
-                ))
-        else:
-            # New format - already has the data
-            items_count = sum(item['quantity'] for item in order_data.get('items', []))
-            items_response = [
-                OrderItemResponse(
-                    product_id=item['product_id'],
-                    product_name=item['name'],
-                    quantity=item['quantity'],
-                    unit_price=item['price'],
-                    total_price=item['price'] * item['quantity']
-                )
-                for item in order_data.get('items', [])
-            ]
-            
-            history.append(OrderHistoryItem(
-                order_id=order_data['order_id'],
-                items=items_response,
-                total_amount=order_data['total'],
-                items_count=items_count,
-                coupons_used=order_data.get('coupons', []),
-                created_at=datetime.fromisoformat(order_data['date'])
-            ))
+    for order in orders:
+        # Fetch order items for each order
+        items_query = select(OrderItem).where(OrderItem.order_id == order.id)
+        items_result = await db.execute(items_query)
+        items = items_result.scalars().all()
+        
+        items_count = sum(item.quantity for item in items)
+        coupons_used = order.applied_coupon_code.split(",") if order.applied_coupon_code else []
+        
+        items_response = [
+            OrderItemResponse(
+                product_id=item.product_id,
+                product_name=item.product_name,
+                quantity=item.quantity,
+                unit_price=item.unit_price,
+                total_price=item.total_price
+            )
+            for item in items
+        ]
+        
+        history.append(OrderHistoryItem(
+            order_id=order.id,
+            items=items_response,
+            total_amount=order.total,
+            items_count=items_count,
+            coupons_used=coupons_used,
+            created_at=order.created_at
+        ))
     
     return history
 

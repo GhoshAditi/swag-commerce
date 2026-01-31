@@ -1,17 +1,21 @@
 """
 Pydantic schemas for request/response validation
 """
+
 from pydantic import BaseModel, Field, ConfigDict
 from typing import Optional, List
 from datetime import datetime
 
 
+# =========================
 # Product Schemas
+# =========================
+
 class TieredPriceSchema(BaseModel):
     """Tiered pricing for bulk discounts"""
     min_quantity: int = Field(gt=0)
     price: float = Field(gt=0)
-    
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -27,11 +31,14 @@ class ProductResponse(BaseModel):
     tier: int = 1
     tiered_pricing: List[TieredPriceSchema] = []
     created_at: datetime
-    
+
     model_config = ConfigDict(from_attributes=True)
 
 
+# =========================
 # Coupon Schemas
+# =========================
+
 class CouponValidateRequest(BaseModel):
     """Coupon validation request"""
     code: str
@@ -45,7 +52,25 @@ class CouponValidateResponse(BaseModel):
     makes_free: bool = False
 
 
+class CouponResponse(BaseModel):
+    """Coupon details response"""
+    id: str
+    code: str
+    discount_type: str
+    discount_value: float
+    expires_at: Optional[datetime] = None
+    usage_limit: Optional[int] = None
+    used_count: int
+    makes_free: bool
+    is_active: bool
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+# =========================
 # Order Schemas
+# =========================
+
 class OrderItemCreate(BaseModel):
     """Order item creation"""
     product_id: str
@@ -67,7 +92,7 @@ class OrderItemResponse(BaseModel):
     quantity: int
     unit_price: float
     total_price: float
-    
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -83,14 +108,20 @@ class OrderResponse(BaseModel):
     status: str
     applied_coupon_code: Optional[str] = None
     created_at: datetime
-    
+
     model_config = ConfigDict(from_attributes=True)
 
 
+# =========================
 # Auth Schemas
+# =========================
+
 class UserSignUp(BaseModel):
     """User registration request"""
-    email: str = Field(..., pattern=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$')
+    email: str = Field(
+        ...,
+        pattern=r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    )
     password: str = Field(..., min_length=6)
     name: Optional[str] = None
     tier: int = Field(default=1, ge=1, le=3)
@@ -110,7 +141,7 @@ class UserResponse(BaseModel):
     tier: int = 1
     status: str
     created_at: datetime
-    
+
     model_config = ConfigDict(from_attributes=True)
 
 
@@ -121,19 +152,20 @@ class AuthResponse(BaseModel):
     user: UserResponse
 
 
-# Cart and Checkout Schemas
-class CartItem(BaseModel):
-    """Cart item schema"""
+# =========================
+# Cart Calculation Schemas
+# =========================
+
+class CartItemInput(BaseModel):
+    """Minimal cart item input for calculation"""
     product_id: str
+    price: float = Field(gt=0)
     quantity: int = Field(gt=0)
-    name: str
-    price: float
-    image_url: str
 
 
 class CartCalculateRequest(BaseModel):
     """Calculate cart total with coupons"""
-    items: List[CartItem]
+    items: List[CartItemInput]
     coupon_codes: List[str] = []
 
 
@@ -154,19 +186,17 @@ class CartCalculateResponse(BaseModel):
     can_add_more_coupons: bool
 
 
-class CouponResponse(BaseModel):
-    """Coupon details response"""
-    id: str
-    code: str
-    discount_type: str
-    discount_value: float
-    expires_at: Optional[datetime] = None
-    usage_limit: Optional[int] = None
-    used_count: int
-    makes_free: bool
-    is_active: bool
-    
-    model_config = ConfigDict(from_attributes=True)
+# =========================
+# Cart / Checkout Schemas
+# =========================
+
+class CartItem(BaseModel):
+    """Cart item with display info"""
+    product_id: str
+    quantity: int = Field(gt=0)
+    name: str
+    price: float
+    image_url: str
 
 
 class PlaceOrderRequest(BaseModel):
@@ -186,7 +216,7 @@ class OrderHistoryItem(BaseModel):
 
 
 class BillResponse(BaseModel):
-    """Bill/Invoice response"""
+    """Bill / Invoice response"""
     order_id: str
     customer_name: str
     customer_email: str
@@ -197,3 +227,18 @@ class BillResponse(BaseModel):
     final_total: float
     created_at: datetime
     status: str
+
+
+# =========================
+# AI Chat Schemas
+# =========================
+
+class ChatRequest(BaseModel):
+    """AI chat request"""
+    question: str
+
+
+class ChatResponse(BaseModel):
+    """AI chat response"""
+    answer: str
+    context_used: dict = {}
